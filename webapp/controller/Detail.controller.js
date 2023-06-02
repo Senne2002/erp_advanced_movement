@@ -22,8 +22,8 @@ sap.ui.define([
             // detail page is busy indication immediately so there is no break in
             // between the busy indication for loading the view's meta data
             var oViewModel = new JSONModel({
-                busy : false,
-                delay : 0
+                busy: false,
+                delay: 0
             });
 
             this.getRouter().getRoute("object").attachPatternMatched(this._onObjectMatched, this);
@@ -51,7 +51,9 @@ sap.ui.define([
             );
         },
 
-        
+        onSave: function () {
+            this.getModel().submitChanges();
+        },
 
         /* =========================================================== */
         /* begin: internal methods                                     */
@@ -64,11 +66,11 @@ sap.ui.define([
          * @private
          */
         _onObjectMatched: function (oEvent) {
-            var sObjectId =  oEvent.getParameter("arguments").objectId;
+            var sObjectId = oEvent.getParameter("arguments").objectId;
             this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
-            this.getModel().metadataLoaded().then( function() {
+            this.getModel().metadataLoaded().then(function () {
                 var sObjectPath = this.getModel().createKey("movementSet", {
-                    MovId:  sObjectId
+                    MovId: sObjectId
                 });
                 this._bindView("/" + sObjectPath);
             }.bind(this));
@@ -89,10 +91,10 @@ sap.ui.define([
             oViewModel.setProperty("/busy", false);
 
             this.getView().bindElement({
-                path : sObjectPath,
+                path: sObjectPath,
                 events: {
-                    change : this._onBindingChange.bind(this),
-                    dataRequested : function () {
+                    change: this._onBindingChange.bind(this),
+                    dataRequested: function () {
                         oViewModel.setProperty("/busy", true);
                     },
                     dataReceived: function () {
@@ -167,7 +169,7 @@ sap.ui.define([
                 this.getModel("appView").setProperty("/layout", "MidColumnFullScreen");
             } else {
                 // reset to previous layout
-                this.getModel("appView").setProperty("/layout",  this.getModel("appView").getProperty("/previousLayout"));
+                this.getModel("appView").setProperty("/layout", this.getModel("appView").getProperty("/previousLayout"));
             }
         }
     });

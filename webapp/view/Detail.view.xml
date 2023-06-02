@@ -46,8 +46,10 @@
      <semantic:content>
             <f:SimpleForm>
                 <f:content>
-                    <Label text="{i18n>MovId}" />
-                    <Text text="{MovId}" />
+                     <Label text="{i18n>MovId}" visible="{detailView>/new}" />
+                    <Input value="{MovId}" visible="{detailView>/new}" />
+                    <Label text="{i18n>MovId}" visible="{= !${detailView>/new} }" />
+                    <Text text="{MovId}" visible="{= !${detailView>/new} }" />
                     <Label text="{i18n>MovType}" />
                     <Input value="{MovType}" />
                     <Label text="{i18n>MovDate}." />

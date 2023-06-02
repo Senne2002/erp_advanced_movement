@@ -23,7 +23,8 @@ sap.ui.define([
             // between the busy indication for loading the view's meta data
             var oViewModel = new JSONModel({
                 busy: false,
-                delay: 0
+                delay: 0,
+                new: false
             });
 
             this.getRouter().getRoute("object").attachPatternMatched(this._onObjectMatched, this);
@@ -52,7 +53,19 @@ sap.ui.define([
         },
 
         onSave: function () {
-            this.getModel().submitChanges();
+            this.getModel("detailView").setProperty("/busy", true);
+            this.getModel().submitChanges({
+                success: (result) => {
+                    this.getModel("detailView").setProperty("/busy", false);
+                    sap.m.MessageToast.show(this.getResourceBundle().getText("saved"));
+                    if (this.getModel("detailView").getProperty("/new")) this.getRouter().navTo("list");
+                },
+                error: (error) => {
+                    this.getModel("detailView").setProperty("/busy", false);
+                    console.error(error);
+                    sap.m.MessageBox.error(error.responseText);
+                }
+            })
         },
 
         /* =========================================================== */
@@ -66,14 +79,37 @@ sap.ui.define([
          * @private
          */
         _onObjectMatched: function (oEvent) {
-            var sObjectId = oEvent.getParameter("arguments").objectId;
+            this.getModel("detailView").setProperty("/new", false);
+
+            const sObjectId = oEvent.getParameter("arguments").objectId,
+                model = this.getModel();
             this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
-            this.getModel().metadataLoaded().then(function () {
-                var sObjectPath = this.getModel().createKey("movementSet", {
-                    MovId: sObjectId
+            model.resetChanges();
+            if (sObjectId === 'new') {
+                // this.getView().setModel(model);
+                const bindingContext = model.createEntry('/movementSet', {
+                    properties: {
+                        MovId: '',
+                        MovType: '',
+                        MovDate: '',
+                        ChgDate: '',
+                        ChgUser: '',
+                        Partner: '',
+                        Location: '',
+                        Finished: false,
+                    }
                 });
-                this._bindView("/" + sObjectPath);
-            }.bind(this));
+                this.getView().bindElement(bindingContext.getPath());
+                this.getModel("detailView").setProperty("/new", true);
+                this.getModel("detailView").setProperty("/busy", false);
+            } else {
+                this.getModel().metadataLoaded().then(function () {
+                    var sObjectPath = model.createKey("movementSet", {
+                        MovId: sObjectId
+                    });
+                    this._bindView("/" + sObjectPath);
+                }.bind(this));
+            }
         },
 
         /**

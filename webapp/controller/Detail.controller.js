@@ -149,6 +149,9 @@ sap.ui.define([
 
             this.getView().bindElement({
                 path: sObjectPath,
+                parameters: {
+                    expand: 'ToMovItem',
+                },
                 events: {
                     change: this._onBindingChange.bind(this),
                     dataRequested: function () {

@@ -44,6 +44,7 @@
                     press=".toggleFullScreen"/>
         </semantic:exitFullScreenAction>
      <semantic:content>
+     <VBox>
             <f:SimpleForm>
                 <f:content>
                      <Label text="{i18n>MovId}" visible="{detailView>/new}" />
@@ -66,7 +67,32 @@
                     <CheckBox selected="{Finished}" />
                 </f:content>
             </f:SimpleForm>
-
+             <Table inset="false" visible="{= !${detailView>/new} }" items="{ path: 'ToMovItem' }">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <content>
+                                <Title text="{i18n>Item}" level="H2"/>
+                            </content>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column>
+                            <Text text="{i18n>ItemID}" />
+                        </Column>
+                        <Column hAlign="End">
+                            <Text text="{i18n>Matnr}" />
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem vAlign="Middle">
+                            <cells>
+                                <ObjectIdentifier title="{ItemId}" />
+                                <ObjectNumber number="{Matnr}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+                </VBox>
         </semantic:content>
 
         <semantic:footerCustomActions>

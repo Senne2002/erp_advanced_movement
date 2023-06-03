@@ -68,6 +68,27 @@ sap.ui.define([
             })
         },
 
+        onDelete: function () {
+            this.getModel("detailView").setProperty("/busy", true);
+            this.getModel().remove(this.getView().getBindingContext().getPath(), {
+                success: (result) => {
+                    this.getModel("detailView").setProperty("/busy", false);
+                    sap.m.MessageToast.show(this.getResourceBundle().getText("deleted"));
+                    this.getRouter().navTo("list");
+                },
+                error: (error) => {
+                    this.getModel("detailView").setProperty("/busy", false);
+                    console.error(error);
+                    sap.m.MessageBox.error(error.responseText);
+                }
+            })
+        },
+
+        onCancel: function () {
+            this.getModel().resetChanges();
+            this.getRouter().navTo("list");
+        },
+
         /* =========================================================== */
         /* begin: internal methods                                     */
         /* =========================================================== */
@@ -149,7 +170,7 @@ sap.ui.define([
                 this.getRouter().getTargets().display("detailObjectNotFound");
                 // if object could not be found, the selection in the list
                 // does not make sense anymore.
-                this.getOwnerComponent().oListSelector.clearListListSelection();
+                //this.getOwnerComponent().oListSelector.clearListListSelection();
                 return;
             }
 

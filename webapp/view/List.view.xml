@@ -1,8 +1,9 @@
-<mvc:View
+<mvc:View xmlns:filterbar="sap.ui.comp.filterbar"
     controllerName="movement.erpadvancedmovement.controller.List"
     xmlns="sap.m"
     xmlns:semantic="sap.f.semantic"
-    xmlns:mvc="sap.ui.core.mvc">
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core">
 
     <semantic:SemanticPage
         id="listPage"
@@ -52,6 +53,12 @@
                                     priority="NeverOverflow"/>
                             </layoutData>
                         </SearchField>
+                         <Select change="onTypeChange">
+                            <core:Item key="IN" text="{i18n>imov}" />
+                            <core:Item key="OUT" text="{i18n>omov}" />
+                            <core:Item key="I/O" text="{i18n>iomov}" />
+				        </Select>
+                        <DatePicker change="onDateChange" width="12rem" placeholder="{i18n>chgDatePicker}"  displayFormat="dd.MM.yyyy" />
                         <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
                         <Button
                             id="sortButton"

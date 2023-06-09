@@ -3,7 +3,8 @@
     xmlns="sap.m"
     xmlns:semantic="sap.f.semantic"
     xmlns:f="sap.ui.layout.form"
-    xmlns:mvc="sap.ui.core.mvc">
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core">
 
     <semantic:SemanticPage
         id="detailPage"
@@ -12,7 +13,7 @@
         showFooter="true">
         <semantic:titleHeading>
             <Title
-                text="{MovId}"
+                text="{Id}"
                 level="H2"/>
         </semantic:titleHeading>
         <semantic:content>
@@ -47,12 +48,16 @@
      <VBox>
             <f:SimpleForm>
                 <f:content>
-                     <Label text="{i18n>MovId}" visible="{detailView>/new}" />
-                    <Input value="{MovId}" visible="{detailView>/new}" />
-                    <Label text="{i18n>MovId}" visible="{= !${detailView>/new} }" />
-                    <Text text="{MovId}" visible="{= !${detailView>/new} }" />
-                    <Label text="{i18n>MovType}" />
-                    <Input value="{MovType}" />
+                    <Label text="{i18n>Id}" visible="{detailView>/new}" />
+                    <Input value="{Id}" visible="{detailView>/new}" />
+                    <Label text="{i18n>Id}" visible="{= !${detailView>/new} }" />
+                    <Text text="{Id}" visible="{= !${detailView>/new} }" />
+                    <Label text="{i18n>Type}" /> 
+                    <Select selectedKey="{Type}">
+                        <core:Item key="IN" text="Incoming movement" />
+                        <core:Item key="OUT" text="Outgoing movement" />
+                        <core:Item key="I/O" text="Incoming and outgoing movement" />
+                    </Select> 
                     <Label text="{i18n>MovDate}." />
                     <DatePicker value="{ path: 'MovDate', type: 'sap.ui.model.type.Date' }" displayFormat="dd.MM.yyyy" />
                     <Label text="{i18n>ChgDate}" />
@@ -61,8 +66,13 @@
                     <Input value="{ChgUser}" />
                     <Label text="{i18n>Partner}" />
                     <Input value="{Partner}" />
-                    <Label text="{i18n>Location}" />
-                    <Input value="{Location}" />
+                    <Label text="{i18n>Location}" /> 
+                    <Select selectedKey="{Location}">
+                        <core:Item key="NOORD" text="Campus noorderplaats" />
+                        <core:Item key="ELLER" text="Campus ellermans" />
+                        <core:Item key="VIADU" text="Campus viaduct" />
+                        <core:Item key="LICHT" text="Campus lichttoren" />
+                    </Select> 
                     <Label text="{i18n>Finished}" />
                     <CheckBox selected="{Finished}" />
                 </f:content>

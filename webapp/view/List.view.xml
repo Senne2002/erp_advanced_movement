@@ -23,7 +23,7 @@
                 items="{
                     path: '/movementSet',
                     sorter: {
-                        path: 'MovId',
+                        path: 'Id',
                         descending: false
                     },
                     groupHeaderFactory: '.createGroupHeader'
@@ -65,7 +65,7 @@
                     <ObjectListItem id="_IDGenObjectListItem1"
                         type="Navigation"
                         press=".onSelectionChange"
-                        title="{MovId}"
+                        title="{Id}"
                          />
                 </items>
             </List>

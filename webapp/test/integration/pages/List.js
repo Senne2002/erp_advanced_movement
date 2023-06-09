@@ -6,138 +6,138 @@ sap.ui.define([
 	"sap/ui/test/matchers/AggregationLengthEquals",
 	"sap/ui/test/matchers/AggregationFilled",
 	"sap/ui/test/matchers/PropertyStrictEquals"
-], function(Opa5, Press, Common, EnterText, AggregationLengthEquals, AggregationFilled, PropertyStrictEquals) {
+], function (Opa5, Press, Common, EnterText, AggregationLengthEquals, AggregationFilled, PropertyStrictEquals) {
 	"use strict";
 
 	var sViewName = "List";
 
 	Opa5.createPageObjects({
-		onTheMasterPage : {
+		onTheMasterPage: {
 
-			baseClass : Common,
+			baseClass: Common,
 
-			actions : {
-				
-				iRememberTheIdOfListItemAtPosition : function (iPosition) {
+			actions: {
+
+				iRememberTheIdOfListItemAtPosition: function (iPosition) {
 					return this.waitFor({
-						id : "list",
-						viewName : sViewName,
-						matchers : function (oList) {
+						id: "list",
+						viewName: sViewName,
+						matchers: function (oList) {
 							return oList.getItems()[iPosition];
 						},
-						success : function (oListItem) {
+						success: function (oListItem) {
 							this.iRememberTheListItem(oListItem);
 						},
-						errorMessage : "The list does not have an item at the index " + iPosition
+						errorMessage: "The list does not have an item at the index " + iPosition
 					});
 				},
 
-				iPressOnTheObjectAtPosition : function (iPositon) {
+				iPressOnTheObjectAtPosition: function (iPositon) {
 					return this.waitFor({
-						id : "list",
-						viewName : sViewName,
-						matchers : function (oList) {
+						id: "list",
+						viewName: sViewName,
+						matchers: function (oList) {
 							return oList.getItems()[iPositon];
 						},
-						actions : new Press(),
-						errorMessage : "List 'list' in view '" + sViewName + "' does not contain an ObjectListItem at position '" + iPositon + "'"
+						actions: new Press(),
+						errorMessage: "List 'list' in view '" + sViewName + "' does not contain an ObjectListItem at position '" + iPositon + "'"
 					});
 				},
-				iSearchForTheFirstObject : function (){
+				iSearchForTheFirstObject: function () {
 					var sFirstObjectTitle;
 					return this.waitFor({
-						id : "list",
-						viewName : sViewName,
-						matchers: new AggregationFilled({name : "items"}),
-						success : function (oList) {
+						id: "list",
+						viewName: sViewName,
+						matchers: new AggregationFilled({ name: "items" }),
+						success: function (oList) {
 							sFirstObjectTitle = oList.getItems()[0].getTitle();
-							return this.iSearchForValue(new EnterText({text: sFirstObjectTitle}), new Press());
+							return this.iSearchForValue(new EnterText({ text: sFirstObjectTitle }), new Press());
 						},
-						errorMessage : "Did not find list items while trying to search for the first item."
+						errorMessage: "Did not find list items while trying to search for the first item."
 					});
 				},
 
-				iSearchForValue : function (aActions) {
+				iSearchForValue: function (aActions) {
 					return this.waitFor({
-						id : "searchField",
-						viewName : sViewName,
+						id: "searchField",
+						viewName: sViewName,
 						actions: aActions,
-						errorMessage : "Failed to find search field in List view.'"
+						errorMessage: "Failed to find search field in List view.'"
 					});
 				},
 
-				iClearTheSearch : function () {
+				iClearTheSearch: function () {
 					//can not use 'EnterText' action to enter empty strings (yet)
-					var fnClearSearchField = function(oSearchField) {
+					var fnClearSearchField = function (oSearchField) {
 						oSearchField.clear();
 					};
 					return this.iSearchForValue([fnClearSearchField]);
 				},
 
-				iRememberTheListItem : function (oListItem) {
+				iRememberTheListItem: function (oListItem) {
 					var oBindingContext = oListItem.getBindingContext();
 					this.getContext().currentItem = {
 						bindingPath: oBindingContext.getPath(),
-						id: oBindingContext.getProperty("MovId"),
-						title: oBindingContext.getProperty("MovId")
+						id: oBindingContext.getProperty("Id"),
+						title: oBindingContext.getProperty("Id")
 					};
 				}
 			},
 
-			assertions : {
+			assertions: {
 
-				iShouldSeeTheList : function () {
+				iShouldSeeTheList: function () {
 					return this.waitFor({
-						id : "list",
-						viewName : sViewName,
-						success : function (oList) {
+						id: "list",
+						viewName: sViewName,
+						success: function (oList) {
 							Opa5.assert.ok(oList, "Found the object List");
 						},
-						errorMessage : "Can't see the list."
+						errorMessage: "Can't see the list."
 					});
 				},
 
-				theListShowsOnlyObjectsWithTheSearchStringInTheirTitle : function () {
+				theListShowsOnlyObjectsWithTheSearchStringInTheirTitle: function () {
 					this.waitFor({
-						id : "list",
-						viewName : sViewName,
-						matchers : new AggregationFilled({name : "items"}),
-						check : function(oList) {
+						id: "list",
+						viewName: sViewName,
+						matchers: new AggregationFilled({ name: "items" }),
+						check: function (oList) {
 							var sTitle = oList.getItems()[0].getTitle(),
 								bEveryItemContainsTheTitle = oList.getItems().every(function (oItem) {
 									return oItem.getTitle().indexOf(sTitle) !== -1;
 								});
 							return bEveryItemContainsTheTitle;
 						},
-						success : function (oList) {
+						success: function (oList) {
 							Opa5.assert.ok(true, "Every item did contain the title");
 						},
-						errorMessage : "The list did not have items"
+						errorMessage: "The list did not have items"
 					});
 				},
 
-				iShouldSeeTheNoDataTextForNoSearchResults : function () {
+				iShouldSeeTheNoDataTextForNoSearchResults: function () {
 					return this.waitFor({
-						id : "list",
-						viewName : sViewName,
-						success : function (oList) {
+						id: "list",
+						viewName: sViewName,
+						success: function (oList) {
 							Opa5.assert.strictEqual(oList.getNoDataText(), oList.getModel("i18n").getProperty("masterListNoDataWithFilterOrSearchText"), "the list should show the no data text for search and filter");
 						},
-						errorMessage : "list does not show the no data text for search and filter"
+						errorMessage: "list does not show the no data text for search and filter"
 					});
 				},
 
-				theListShouldHaveNoSelection : function () {
+				theListShouldHaveNoSelection: function () {
 					return this.waitFor({
-						id : "list",
-						viewName : sViewName,
-						matchers : function(oList) {
+						id: "list",
+						viewName: sViewName,
+						matchers: function (oList) {
 							return !oList.getSelectedItem();
 						},
-						success : function (oList) {
+						success: function (oList) {
 							Opa5.assert.strictEqual(oList.getSelectedItems().length, 0, "The list selection is removed");
 						},
-						errorMessage : "List selection was not removed"
+						errorMessage: "List selection was not removed"
 					});
 				}
 			}

@@ -95,7 +95,7 @@ sap.ui.define([
             var sQuery = oEvent.getParameter("query");
 
             if (sQuery) {
-                this._oListFilterState.aSearch = [new Filter("MovId", FilterOperator.Contains, sQuery)];
+                this._oListFilterState.aSearch = [new Filter("Id", FilterOperator.Contains, sQuery)];
             } else {
                 this._oListFilterState.aSearch = [];
             }
@@ -244,7 +244,7 @@ sap.ui.define([
                 delay: 0,
                 title: this.getResourceBundle().getText("listTitleCount", [0]),
                 noDataText: this.getResourceBundle().getText("listListNoDataText"),
-                sortBy: "MovId",
+                sortBy: "Id",
                 groupBy: "None"
             });
         },
@@ -265,7 +265,7 @@ sap.ui.define([
             // set the layout property of FCL control to show two columns
             this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
             this.getRouter().navTo("object", {
-                objectId: oItem.getBindingContext().getProperty("MovId")
+                objectId: oItem.getBindingContext().getProperty("Id")
             }, bReplace);
         },
 

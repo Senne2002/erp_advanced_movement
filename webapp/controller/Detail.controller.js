@@ -110,8 +110,8 @@ sap.ui.define([
                 // this.getView().setModel(model);
                 const bindingContext = model.createEntry('/movementSet', {
                     properties: {
-                        MovId: '',
-                        MovType: '',
+                        Id: '',
+                        Type: '',
                         MovDate: '',
                         ChgDate: '',
                         ChgUser: '',
@@ -126,7 +126,7 @@ sap.ui.define([
             } else {
                 this.getModel().metadataLoaded().then(function () {
                     var sObjectPath = model.createKey("movementSet", {
-                        MovId: sObjectId
+                        Id: sObjectId
                     });
                     this._bindView("/" + sObjectPath);
                 }.bind(this));
@@ -180,8 +180,8 @@ sap.ui.define([
             var sPath = oElementBinding.getPath(),
                 oResourceBundle = this.getResourceBundle(),
                 oObject = oView.getModel().getObject(sPath),
-                sObjectId = oObject.MovId,
-                sObjectName = oObject.MovId,
+                sObjectId = oObject.Id,
+                sObjectName = oObject.Id,
                 oViewModel = this.getModel("detailView");
 
             this.getOwnerComponent().oListSelector.selectAListItem(sPath);

@@ -8,7 +8,7 @@
         <sortItems>
             <ViewSettingsItem
                 text="{i18n>listSort1}"
-                key="MovId"
+                key="Id"
                 selected="true"/>
 
         </sortItems>
